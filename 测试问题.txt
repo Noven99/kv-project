@@ -1,0 +1,12 @@
+主要集中在batch.go文件和db.go文件
+
+batch.go：
+txnFinKey未定义就在后面的Commit方法中使用了，需要定义：var txnFinKey = []byte("txn-fin")
+在logRecordKeyWithSeq方法中，复制的位置出错：copy(encKey[:n], key[:n]) -> copy(encKey[:n], seq[:n])
+
+db.go：
+一个定义了var txnFinKey = []byte("txn-fin")，一个未定义，正确做法是不需要在这里定义，在batch.go文件中定义
+在Open方法中，//B+树索引不需要从数据文件中加载索引：if options.IndexType == BPlusTree -> options.IndexType != BPlusTree
+在Open方法中，//重置IO类型为标准IO的的那段代码位置出错，应该在//取出当前事务序列号后面
+在Delete方法中，//写入到数据文件当中return nil -> return err
+在getValueByposition方法中，//根据偏移读取对应的数据 return nil, ErrDataFileNotFound-> return nil, ErrKeyNotFound
