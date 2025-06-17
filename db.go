@@ -116,7 +116,7 @@ func Open(options Options) (*DB, error) {
 				return nil, err
 			}
 		}
-	}git --version
+	}
 
 	//取出当前事务序列号
 	if options.IndexType == BPlusTree {
@@ -304,7 +304,7 @@ func (db *DB) appendLogRecordWithLock(logRecord *data.LogRecord) (*data.LogRecor
 // 追加写数据到活跃文件中
 func (db *DB) appendLogRecord(logRecord *data.LogRecord) (*data.LogRecordPos, error) {
 
-		// 判断当前活跃数据文件是否存在，因为数据库在没有写入的时候是没有文件生成的
+	// 判断当前活跃数据文件是否存在，因为数据库在没有写入的时候是没有文件生成的
 	// 如果为空则初始化数据文件
 	if db.activeFile == nil {
 		if err := db.setActiveDataFile(); err != nil {
@@ -355,8 +355,6 @@ func (db *DB) appendLogRecord(logRecord *data.LogRecord) (*data.LogRecordPos, er
 	pos := &data.LogRecordPos{Fid: db.activeFile.FileId, Offset: writeOff, Size: uint32(size)}
 	return pos, nil
 }
-
-
 
 // 设置当前活跃文件（相当于初始化）
 // 在访问此方法前必须持有互斥锁
